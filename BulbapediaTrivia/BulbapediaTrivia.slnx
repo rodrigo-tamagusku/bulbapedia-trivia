@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../BulbapediaTrivia.Tests/BulbapediaTrivia.Tests.csproj" />
+  <Project Path="BulbapediaTrivia.csproj" />
+</Solution>
