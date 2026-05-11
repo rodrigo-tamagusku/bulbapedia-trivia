@@ -1,15 +1,18 @@
-﻿namespace BulbapediaTrivia.Tests
+﻿using System.Text.Json;
+using BulbapediaTrivia.Service;
+
+namespace BulbapediaTrivia.Tests
 {
     public class GetLinksTest
     {
         [Test]
         public void GetAllImageLinks()
         {
-            Dictionary<int, string> linksPokedex = GetLinks.GetAllImageLinks();
-            foreach (var item in linksPokedex)
-            {
-                Console.WriteLine($"ID: {item.Key}, Name: {item.Value}");
-            }
+            HtmlService httpService = new HtmlService();
+            Dictionary<int, string> linksPokedex = httpService.GetAllImageLinks();
+
+            string jsonString = JsonSerializer.Serialize(linksPokedex, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText("PokedexImageLinks.json", jsonString);
         }
     }
 }
