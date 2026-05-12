@@ -8,11 +8,12 @@ namespace BulbapediaTrivia.Tests
         [Test]
         public void GetAllImageLinks()
         {
-            HtmlService httpService = new HtmlService();
-            Dictionary<int, string> linksPokedex = httpService.GetAllImageLinks();
+            BulbapediaHtmlService httpService = new BulbapediaHtmlService();
+            Dictionary<int, string> linksPokedex = httpService.GetAllPokemonThumbLinks();
 
             string jsonString = JsonSerializer.Serialize(linksPokedex, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText("PokedexImageLinks.json", jsonString);
+            ///https://archives.bulbagarden.net/wiki/Category:HOME_menu_sprites
         }
     }
 }
