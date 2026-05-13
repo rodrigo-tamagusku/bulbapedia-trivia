@@ -1,5 +1,4 @@
-﻿using System.Xml.Linq;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 
 namespace BulbapediaTrivia.Service
 {
@@ -7,7 +6,7 @@ namespace BulbapediaTrivia.Service
     {
         private HtmlWeb web;
         private const string BULBAPEDIA_SPRITES_PAGED = "https://archives.bulbagarden.net/wiki/Category:HOME_menu_sprites";
-        private const string BULBAPEDIA_BASE_URL = "https://archives.bulbagarden.net/";
+        private const string BULBAPEDIA_BASE_URL = "https://archives.bulbagarden.net";
 
         public BulbapediaHtmlService()
         {
@@ -22,10 +21,12 @@ namespace BulbapediaTrivia.Service
         // Use yield return to provide key-value pairs one at a time
         public IEnumerable<KeyValuePair<int, string>> GetThumbPerPage(string url)
         {
-            HtmlDocument doc = web.Load(url);
-            List<HtmlNode> nodeLinksPerPage = doc.DocumentNode.Descendants("img")
-                           .Where(n => n.Attributes["src"]?.Value != null)
-                           .ToList();
+            HtmlDocument doc = web.LoadFromWebAsync(url).Result;
+            IEnumerable<HtmlNode> nodeLinksPerPage = doc.DocumentNode.Descendants("img")
+                           .Where(n => n.Attributes["src"]?.Value != null);
+            var listas = doc.DocumentNode.Descendants("a");
+            HtmlNode? nextPage = doc.DocumentNode.Descendants("a")
+                   .FirstOrDefault(n => n.InnerText.Trim().ToLower() == "next page");
             foreach (HtmlNode node in nodeLinksPerPage)
             {
                 string imageSrc = node.GetAttributeValue("src", "");
@@ -39,15 +40,27 @@ namespace BulbapediaTrivia.Service
                     //else is a regional variant (galar, alolan, mega, etc)
                 }
             }
-            HtmlNode? nextPage = doc.DocumentNode.Descendants("a")
-                           .Where(n => n.InnerText == "next page")
-                           .FirstOrDefault();
             if (nextPage != null)
             {
                 string href = nextPage.GetAttributeValue("href", "");
-                string nextPageUrl = BULBAPEDIA_BASE_URL + href;
-                GetThumbPerPage(nextPageUrl);
+                string nextPageUrl = GetNextPageUrl(href);
+                foreach (var pair in GetThumbPerPage(nextPageUrl))
+                {
+                    yield return pair;
+                }
             }
+        }
+
+        private static string GetNextPageUrl(string href)
+        {
+            string[] fileFrom = href.Split("filefrom");
+            string subRoute = href;
+            if (fileFrom.Length == 2)
+            {
+                string appendBlock = fileFrom.Last().Split("#").First();
+                subRoute = fileFrom[0] + "filefrom"+ appendBlock + "&filefrom"+ fileFrom[1];
+            }
+            return BULBAPEDIA_BASE_URL + subRoute;
         }
     }
 }
