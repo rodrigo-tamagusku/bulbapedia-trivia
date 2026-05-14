@@ -18,6 +18,7 @@ namespace BulbapediaTrivia.Tests
         [Theory]
         [InlineData("Ditto_(Pokémon)")]
         [InlineData("Metagross_(Pokémon)")]
+        [InlineData("orthworm_(Pokémon)")]
         public async Task FullPagePlainTextQuery(string pageTitle)
         {
             var result = await this.mediaWikiService.FullPagePlainTextQuery(pageTitle);

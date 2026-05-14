@@ -14,7 +14,7 @@ namespace BulbapediaTrivia.Service
         public MediaWikiService(string domain, HttpClient httpClient)
         {
             this.domain = domain;
-            this.query = "/w/api.php?action=query&prop=extracts&explaintext=1&titles={0}&sectiontitle=Trivia&format=json";
+            this.query = "/w/api.php?action=query&prop=extracts&explaintext=1&titles={0}&format=json";
             this.httpClient = httpClient;
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd($"MyPokemonApp/1.0 ({contact})");
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
