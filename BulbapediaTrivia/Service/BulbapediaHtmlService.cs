@@ -15,16 +15,17 @@ namespace BulbapediaTrivia.Service
 
         public Dictionary<int, string> GetAllPokemonThumbLinks()
         {
-            return GetThumbPerPage(BULBAPEDIA_SPRITES_PAGED).ToDictionary(pair => pair.Key, pair => pair.Value);
+            return GetThumbPerPage(BULBAPEDIA_SPRITES_PAGED)
+                        .GroupBy(kvp => kvp.Key)
+                        .ToDictionary(g => g.Key, g => g.Last().Value);
         }
 
         // Use yield return to provide key-value pairs one at a time
         public IEnumerable<KeyValuePair<int, string>> GetThumbPerPage(string url)
         {
-            HtmlDocument doc = web.LoadFromWebAsync(url).Result;
+            HtmlDocument doc = web.Load(url);
             IEnumerable<HtmlNode> nodeLinksPerPage = doc.DocumentNode.Descendants("img")
                            .Where(n => n.Attributes["src"]?.Value != null);
-            var listas = doc.DocumentNode.Descendants("a");
             HtmlNode? nextPage = doc.DocumentNode.Descendants("a")
                    .FirstOrDefault(n => n.InnerText.Trim().ToLower() == "next page");
             foreach (HtmlNode node in nodeLinksPerPage)
