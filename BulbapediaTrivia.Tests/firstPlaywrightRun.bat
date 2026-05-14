@@ -1,0 +1,1 @@
+powershell bin/Debug/netX/playwright.ps1 install 

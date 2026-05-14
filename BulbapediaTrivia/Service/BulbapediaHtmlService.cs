@@ -31,25 +31,33 @@ namespace BulbapediaTrivia.Service
             foreach (HtmlNode node in nodeLinksPerPage)
             {
                 string imageSrc = node.GetAttributeValue("src", "");
-                if (!string.IsNullOrEmpty(imageSrc) && imageSrc.Contains("Menu_HOME"))
-                {
-                    string lastFour = imageSrc.Split(".png")[0][^4..];
-                    if (int.TryParse(lastFour, out int pokedexNumber))
-                    {
-                        yield return new KeyValuePair<int, string>(pokedexNumber, imageSrc);
-                    }
-                    //else is a regional variant (galar, alolan, mega, etc)
-                }
+                KeyValuePair<int, string>? valuePair = ValuePairFromSrc(imageSrc);
+                if (valuePair != null)
+                    yield return valuePair.Value;
             }
             if (nextPage != null)
             {
                 string href = nextPage.GetAttributeValue("href", "");
                 string nextPageUrl = GetNextPageUrl(href);
-                foreach (var pair in GetThumbPerPage(nextPageUrl))
+                foreach (KeyValuePair<int, string> pair in GetThumbPerPage(nextPageUrl))
                 {
                     yield return pair;
                 }
             }
+        }
+
+        public KeyValuePair<int, string>? ValuePairFromSrc(string? imageSrc)
+        {
+            if (!string.IsNullOrEmpty(imageSrc) && imageSrc.Contains("Menu_HOME"))
+            {
+                string lastFour = imageSrc.Split(".png")[0][^4..];
+                if (int.TryParse(lastFour, out int pokedexNumber))
+                {
+                    return new KeyValuePair<int, string>(pokedexNumber, imageSrc);
+                }
+                //else is a regional variant (galar, alolan, mega, etc)
+            }
+            return null;
         }
 
         private static string GetNextPageUrl(string href)
@@ -59,7 +67,7 @@ namespace BulbapediaTrivia.Service
             if (fileFrom.Length == 2)
             {
                 string appendBlock = fileFrom.Last().Split("#").First();
-                subRoute = fileFrom[0] + "filefrom"+ appendBlock + "&filefrom"+ fileFrom[1];
+                subRoute = fileFrom[0] + "filefrom" + appendBlock + "&filefrom" + fileFrom[1];
             }
             return BULBAPEDIA_BASE_URL + subRoute;
         }
