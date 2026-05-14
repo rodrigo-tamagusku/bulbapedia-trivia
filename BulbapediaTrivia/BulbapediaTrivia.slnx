@@ -1,4 +1,6 @@
 <Solution>
+  <Project Path="../BulbapediaTrivia.Game/BulbapediaTrivia.Game.Client/BulbapediaTrivia.Game.Client.csproj" Id="cfdfd944-78d9-4b59-a72d-d53c039fa797" />
+  <Project Path="../BulbapediaTrivia.Game/BulbapediaTrivia.Game/BulbapediaTrivia.Game.csproj" Id="674bcce5-a63d-4fef-8294-952cd9a98426" />
   <Project Path="../BulbapediaTrivia.Tests/BulbapediaTrivia.Tests.csproj" />
   <Project Path="BulbapediaTrivia.csproj" />
 </Solution>

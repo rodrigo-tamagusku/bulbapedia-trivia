@@ -71,5 +71,20 @@ namespace BulbapediaTrivia.Service
             }
             return BULBAPEDIA_BASE_URL + subRoute;
         }
+
+        public Dictionary<int, string> GetExamplePokemonThumbLinks()
+        {
+            return new Dictionary<int, string>() {
+                { 1, "https://archives.bulbagarden.net/media/upload/7/70/Menu_HOME_0001.png" } ,
+                { 2, "https://archives.bulbagarden.net/media/upload/b/b7/Menu_HOME_0002.png" },
+                { 3, "https://archives.bulbagarden.net/media/upload/9/99/Menu_HOME_0003.png" },
+                { 4, "https://archives.bulbagarden.net/media/upload/9/9c/Menu_HOME_0004.png" },
+                { 5, "https://archives.bulbagarden.net/media/upload/1/1b/Menu_HOME_0005.png" },
+                { 6, "https://archives.bulbagarden.net/media/upload/b/b7/Menu_HOME_0006.png" },
+                { 7, "https://archives.bulbagarden.net/media/upload/1/18/Menu_HOME_0007.png" },
+                { 8, "https://archives.bulbagarden.net/media/upload/9/97/Menu_HOME_0008.png" },
+                { 9, "https://archives.bulbagarden.net/media/upload/9/9e/Menu_HOME_0009.png" }
+            };
+        }
     }
 }
