@@ -1,0 +1,30 @@
+﻿@page "/"
+@rendermode InteractiveAuto
+
+<MudSelect T="PokemonPreview" Label="Select Pokémon" ToStringFunc="@(u => u?.Name)">
+    @foreach (var PokemonPreview in Pokemons)
+    {
+        <MudSelectItem Value="@PokemonPreview">
+            <div class="d-flex align-center">
+                <MudImage Src="@PokemonPreview.AvatarUrl" Width="24" Height="24" Class="mr-2" />
+                <MudText>@PokemonPreview.Name</MudText>
+            </div>
+        </MudSelectItem>
+    }
+</MudSelect>
+
+@code {
+    public record PokemonPreview(string Name, string AvatarUrl);
+    private List<PokemonPreview> Pokemons = new()
+    {
+        new PokemonPreview( "Bulbasaur", "https://img.pokemondb.net/sprites/scarlet-violet/icon/avif/bulbasaur.avif") ,
+        new PokemonPreview( "Ivysaur", "https://img.pokemondb.net/sprites/scarlet-violet/icon/avif/ivysaur.avif" ),
+        new PokemonPreview( "Venusaur", "https://img.pokemondb.net/sprites/scarlet-violet/icon/avif/venusaur.avif" ),
+        new PokemonPreview( "Charmander", "https://img.pokemondb.net/sprites/scarlet-violet/icon/avif/charmander.avif" ),
+        new PokemonPreview( "Charmeleon", "https://img.pokemondb.net/sprites/scarlet-violet/icon/avif/charmeleon.avif" ),
+        new PokemonPreview( "Charizard", "https://img.pokemondb.net/sprites/scarlet-violet/icon/avif/charizard.avif" ),
+        new PokemonPreview( "Squirtle", "https://img.pokemondb.net/sprites/scarlet-violet/icon/avif/squirtle.avif" ),
+        new PokemonPreview( "Wartortle", "https://img.pokemondb.net/sprites/scarlet-violet/icon/avif/wartortle.avif" ),
+        new PokemonPreview( "Blastoise", "https://img.pokemondb.net/sprites/scarlet-violet/icon/avif/blastoise.avif" )
+    };
+}
