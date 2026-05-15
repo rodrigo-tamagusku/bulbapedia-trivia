@@ -23,5 +23,6 @@ namespace BulbapediaTrivia.Tests
         {
             var result = await this.mediaWikiService.FullPagePlainTextQuery(pageTitle);
         }
+
     }
 }

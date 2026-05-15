@@ -3,5 +3,6 @@
     public class Constants
     {
         public const string BULBAPEDIA_WIKI = "https://bulbapedia.bulbagarden.net";
+        public const string FOLDER_TRIVIA = "PokemonTriviaJson";
     }
 }

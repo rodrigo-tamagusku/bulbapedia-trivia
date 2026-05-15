@@ -9,7 +9,7 @@ namespace BulbapediaTrivia.Service
         private readonly string domain = "";
         private readonly string query;
         private readonly HttpClient httpClient;
-        private readonly string contact = "nimbus.soneca@gmail.com";
+        private readonly string contact = Environment.GetEnvironmentVariable("PERSONAL_EMAIL") ?? "email@example.com";
 
         public MediaWikiService(string domain, HttpClient httpClient)
         {
@@ -27,5 +27,20 @@ namespace BulbapediaTrivia.Service
             return result;
         }
 
+        public string? GetPlainText(WikipediaResponse? response)
+        {
+            if (response?.Warnings?.Main != null)
+            {
+                foreach (var warning in response.Warnings.Main)
+                {
+                    Console.WriteLine($"{warning.Key} - {warning.Value}");
+                }
+            }
+            if (response?.Query?.Pages?.Count != 1)
+            {
+                Console.WriteLine("The response came weird.");
+            }
+            return response?.Query?.Pages?.FirstOrDefault().Value.Extract;
+        }
     }
 }
