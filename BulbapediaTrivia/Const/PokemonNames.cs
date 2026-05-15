@@ -1,9 +1,8 @@
 ﻿namespace BulbapediaTrivia.Const
 {
-    internal class PokemonNames
+    public class PokemonNames
     {
-        public static ReadOnlySpan<string> Gen1 => new[]
-            {
+        public static readonly string[] Gen1 = [
                 "Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard",
                 "Squirtle", "Wartortle", "Blastoise", "Caterpie", "Metapod", "Butterfree",
                 "Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto", "Pidgeot", "Rattata",
@@ -27,6 +26,6 @@
                 "Jolteon", "Flareon", "Porygon", "Omanyte", "Omastar", "Kabuto", "Kabutops",
                 "Aerodactyl", "Snorlax", "Articuno", "Zapdos", "Moltres", "Dratini", "Dragonair",
                 "Dragonite", "Mewtwo", "Mew"
-            };
+            ];
     }
 }

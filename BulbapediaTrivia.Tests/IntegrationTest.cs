@@ -34,6 +34,21 @@ namespace BulbapediaTrivia.Tests
             SaveObject(pageTitle, linksPokedex);
         }
 
+        [Fact]
+        public async Task SaveAllPokemonTriviaAsJson()
+        {
+            foreach(var pokemonName in PokemonNames.Gen1)
+            {
+                string pageTitle = $"{pokemonName}_(Pokémon)";
+                WikipediaResponse? result = await this.mediaWikiService.FullPagePlainTextQuery(pageTitle);
+                string? pageContent = this.mediaWikiService.GetPlainText(result);
+                if (pageContent == null) { Assert.Fail(); }
+                object linksPokedex = this.textProcessorService.GetTriviaFromPageContent(pageTitle, pageContent);
+                SaveObject(pageTitle, linksPokedex);
+
+            }
+        }
+
         private static void SaveObject(string name, object someJsonCompatibleObject)
         {
             string jsonString = JsonSerializer.Serialize(someJsonCompatibleObject,
