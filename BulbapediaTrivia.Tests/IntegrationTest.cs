@@ -30,21 +30,35 @@ namespace BulbapediaTrivia.Tests
             WikipediaResponse? result = await this.mediaWikiService.FullPagePlainTextQuery(pageTitle);
             string? pageContent = this.mediaWikiService.GetPlainText(result);
             if (pageContent == null) { Assert.Fail(); }
-            object linksPokedex = this.textProcessorService.GetTriviaFromPageContent(pageTitle, pageContent);
-            SaveObject(pageTitle, linksPokedex);
+            object triviaList = this.textProcessorService.GetTriviaFromPageContent(pageTitle, pageContent);
+            SaveObject(pageTitle, triviaList);
         }
 
         [Fact]
         public async Task SaveAllPokemonTriviaAsJson()
         {
-            foreach(var pokemonName in PokemonNames.Gen1)
+            List<Trivia> triviaList = new();
+            foreach (var pokemonName in PokemonNames.Gen1)
             {
                 string pageTitle = $"{pokemonName}_(Pokémon)";
                 WikipediaResponse? result = await this.mediaWikiService.FullPagePlainTextQuery(pageTitle);
                 string? pageContent = this.mediaWikiService.GetPlainText(result);
                 if (pageContent == null) { Assert.Fail(); }
-                object linksPokedex = this.textProcessorService.GetTriviaFromPageContent(pageTitle, pageContent);
-                SaveObject(pageTitle, linksPokedex);
+                triviaList.AddRange(this.textProcessorService.GetTriviaFromPageContent(pokemonName, pageContent));
+            }
+            SaveObject(nameof(PokemonNames.Gen1), triviaList);
+        }
+        [Fact]
+        public async Task SaveAllPokemonTriviaAsJson_Individual()
+        {
+            foreach (var pokemonName in PokemonNames.Gen1)
+            {
+                string pageTitle = $"{pokemonName}_(Pokémon)";
+                WikipediaResponse? result = await this.mediaWikiService.FullPagePlainTextQuery(pageTitle);
+                string? pageContent = this.mediaWikiService.GetPlainText(result);
+                if (pageContent == null) { Assert.Fail(); }
+                object triviaList = this.textProcessorService.GetTriviaFromPageContent(pokemonName, pageContent);
+                SaveObject(pokemonName, triviaList);
 
             }
         }
