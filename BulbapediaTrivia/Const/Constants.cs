@@ -7,5 +7,6 @@
         public const string TRIVIA_PATH = "BulbapediaTrivia.Data\\Trivia\\ByGen";
         public const string IMAGES_PATH = "BulbapediaTrivia.Data\\Pokemon";
         public const string TRIVIA_HEADER = "Trivia";
+        public const int MAX_POKEDEX_NUMBER = 1025;
     }
 }
