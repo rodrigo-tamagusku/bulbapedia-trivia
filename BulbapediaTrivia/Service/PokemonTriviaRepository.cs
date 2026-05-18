@@ -6,32 +6,41 @@ namespace BulbapediaTrivia.Service
 {
     public class PokemonTriviaRepository
     {
-        public async Task<List<Trivia>> GetTriviaFromJson()
+        public Dictionary<string, List<Trivia>> GetTriviaFromJson()
         {
-            List<Trivia> trivias = new();
             string filePath = GetTriviaDataPath();
+            return ReadFiles(filePath);
+        }
+        public Dictionary<string, List<Trivia>> ReadFiles(string folderPath)
+        {
+            Dictionary<string, List<Trivia>> dict = new();
+            // 2. Check if the directory exists to avoid exceptions
+            if (!Directory.Exists(folderPath)) throw new Exception("NotFound");
 
-            try
+            // 3. Get all files with the .json extension
+            string[] files = Directory.GetFiles(folderPath, "*.json");
+
+            foreach (string file in files)
             {
-                // 3. Ensure the file actually exists
-                if (!File.Exists(filePath))
+                try
                 {
-                    Console.WriteLine($"Error: File not found at {filePath}");
-                }
+                    // 4. Read the raw text
+                    string fileName = Path.GetFileName(file);
+                    string jsonString = File.ReadAllText(file);
 
-                // 4. Open the file stream and deserialize asynchronously
-                using FileStream openStream = File.OpenRead(filePath);
-                List<Trivia>? users = await JsonSerializer.DeserializeAsync<List<Trivia>>(openStream);
+                    // 5. Deserialize into your object
+                    List<Trivia>? list = JsonSerializer.Deserialize<List<Trivia>>(jsonString);
+                    if (list != null)
+                    {
+                        dict.Add(fileName, list);
+                    }
+                }
+                catch (JsonException ex)
+                {
+                    Console.WriteLine($"Error parsing {file}: {ex.Message}");
+                }
             }
-            catch (JsonException ex)
-            {
-                Console.WriteLine($"JSON Parsing Error: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred: {ex.Message}");
-            }
-            return trivias;
+            return dict;
         }
 
         public string GetTriviaDataPath()

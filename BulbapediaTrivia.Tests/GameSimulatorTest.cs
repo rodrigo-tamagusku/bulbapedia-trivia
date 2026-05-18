@@ -15,7 +15,11 @@ namespace BulbapediaTrivia.Tests
         [Fact]
         public async Task GetTriviaFromJson()
         {
-
+            var result = this.pokemonTriviaRepository.GetTriviaFromJson();
+            Assert.NotNull(result);
+            Assert.NotEmpty(result);
+            Assert.Single(result); //Change when more
+            Assert.True(result.Values.First().Count > 1000); 
         }
         [Fact]
         public async Task GetTriviaDataPath()
