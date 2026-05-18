@@ -31,7 +31,7 @@ namespace BulbapediaTrivia.Tests
             string? pageContent = this.mediaWikiService.GetPlainText(result);
             if (pageContent == null) { Assert.Fail(); }
             object triviaList = this.textProcessorService.GetHeaderFromPageContent(pageTitle, pageContent, Constants.TRIVIA_HEADER);
-            SaveObject(pageTitle, triviaList);
+            JsonHelper.SaveObject(pageTitle, triviaList, Constants.TRIVIA_PATH);
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace BulbapediaTrivia.Tests
                 if (pageContent == null) { Assert.Fail(); }
                 triviaList.AddRange(this.textProcessorService.GetHeaderFromPageContent(pokemonName, pageContent, Constants.TRIVIA_HEADER));
             }
-            SaveObject(nameof(PokemonNames.Gen1), triviaList);
+            JsonHelper.SaveObject(nameof(PokemonNames.Gen1), triviaList, Constants.TRIVIA_PATH);
         }
         [Fact]
         public async Task SaveAllPokemonTriviaAsJson_Individual()
@@ -58,25 +58,9 @@ namespace BulbapediaTrivia.Tests
                 string? pageContent = this.mediaWikiService.GetPlainText(result);
                 if (pageContent == null) { Assert.Fail(); }
                 object triviaList = this.textProcessorService.GetHeaderFromPageContent(pokemonName, pageContent, Constants.TRIVIA_HEADER);
-                SaveObject(pokemonName, triviaList);
+                JsonHelper.SaveObject(pokemonName, triviaList, Constants.TRIVIA_PATH);
 
             }
-        }
-
-        private static void SaveObject(string name, object someJsonCompatibleObject)
-        {
-            string jsonString = JsonSerializer.Serialize(someJsonCompatibleObject,
-                new JsonSerializerOptions
-                {
-                    Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
-                    WriteIndented = true
-                });
-            string filename = $"{name}.json";
-            string current = Directory.GetCurrentDirectory();
-            string directory = Path.Combine(current, Constants.FOLDER_TRIVIA);
-            string fullPath = Path.Combine(directory, filename);
-            if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
-            File.WriteAllText(fullPath, jsonString);
         }
     }
 }
