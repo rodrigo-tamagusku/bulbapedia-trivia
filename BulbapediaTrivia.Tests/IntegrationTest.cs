@@ -30,7 +30,7 @@ namespace BulbapediaTrivia.Tests
             WikipediaResponse? result = await this.mediaWikiService.FullPagePlainTextQuery(pageTitle);
             string? pageContent = this.mediaWikiService.GetPlainText(result);
             if (pageContent == null) { Assert.Fail(); }
-            object triviaList = this.textProcessorService.GetTriviaFromPageContent(pageTitle, pageContent);
+            object triviaList = this.textProcessorService.GetHeaderFromPageContent(pageTitle, pageContent, Constants.TRIVIA_HEADER);
             SaveObject(pageTitle, triviaList);
         }
 
@@ -44,7 +44,7 @@ namespace BulbapediaTrivia.Tests
                 WikipediaResponse? result = await this.mediaWikiService.FullPagePlainTextQuery(pageTitle);
                 string? pageContent = this.mediaWikiService.GetPlainText(result);
                 if (pageContent == null) { Assert.Fail(); }
-                triviaList.AddRange(this.textProcessorService.GetTriviaFromPageContent(pokemonName, pageContent));
+                triviaList.AddRange(this.textProcessorService.GetHeaderFromPageContent(pokemonName, pageContent, Constants.TRIVIA_HEADER));
             }
             SaveObject(nameof(PokemonNames.Gen1), triviaList);
         }
@@ -57,7 +57,7 @@ namespace BulbapediaTrivia.Tests
                 WikipediaResponse? result = await this.mediaWikiService.FullPagePlainTextQuery(pageTitle);
                 string? pageContent = this.mediaWikiService.GetPlainText(result);
                 if (pageContent == null) { Assert.Fail(); }
-                object triviaList = this.textProcessorService.GetTriviaFromPageContent(pokemonName, pageContent);
+                object triviaList = this.textProcessorService.GetHeaderFromPageContent(pokemonName, pageContent, Constants.TRIVIA_HEADER);
                 SaveObject(pokemonName, triviaList);
 
             }

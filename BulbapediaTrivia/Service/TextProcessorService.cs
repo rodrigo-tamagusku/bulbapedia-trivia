@@ -5,7 +5,7 @@ namespace BulbapediaTrivia.Service
 {
     public class TextProcessorService
     {
-        public List<Trivia> GetTriviaFromPageContent(string name, string wikiText)
+        public List<Trivia> GetHeaderFromPageContent(string name, string wikiText, string searchHeader)
         {
             List<Trivia> trivias = new List<Trivia>();
             using var reader = new StringReader(wikiText);
@@ -22,7 +22,7 @@ namespace BulbapediaTrivia.Service
                 if (trimmedLine.StartsWith("==") && trimmedLine.EndsWith("=="))
                 {
                     // 1. Flush the previous section if it has content
-                    trivias.AddRange(FlushSection(currentHeader, currentContent.ToString(), name));
+                    trivias.AddRange(FlushSection(currentHeader, currentContent.ToString(), name, searchHeader));
 
                     // 2. Extract the new header name by trimming off the '=' characters
                     currentHeader = trimmedLine.Trim('=').Trim();
@@ -41,13 +41,13 @@ namespace BulbapediaTrivia.Service
             }
 
             // Don't forget to flush the very last section after the loop ends!
-            trivias.AddRange(FlushSection(currentHeader, currentContent.ToString(), name));
+            trivias.AddRange(FlushSection(currentHeader, currentContent.ToString(), name, searchHeader));
             return trivias;
         }
 
-        private static IEnumerable<Trivia> FlushSection(string header, string content, string name)
+        private static IEnumerable<Trivia> FlushSection(string header, string content, string name, string searchHeader)
         {
-            if (header == "Trivia")
+            if (header == searchHeader)
             {
                 string[] lines = content.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var line in lines)

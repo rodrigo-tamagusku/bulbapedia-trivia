@@ -1,4 +1,5 @@
-﻿using BulbapediaTrivia.Model;
+﻿using BulbapediaTrivia.Const;
+using BulbapediaTrivia.Model;
 using BulbapediaTrivia.Service;
 using Xunit;
 
@@ -19,7 +20,7 @@ namespace BulbapediaTrivia.Tests
         [InlineData(METAGROSS_EXTRACT)]
         public async Task FullPagePlainTextQuery(string extract)
         {
-            List<Trivia> result = this.textProcessorService.GetTriviaFromPageContent("Metagross", extract);
+            List<Trivia> result = this.textProcessorService.GetHeaderFromPageContent("Metagross", extract, Constants.TRIVIA_HEADER);
             Assert.NotNull(result);
             Assert.NotEmpty(result);
         }
